@@ -52,10 +52,10 @@ public class DiretorioDAO implements ArquivoDAO{
 
 	@Override
 	public void remover(Object pasta) {
-		String pastaAdicionar = (String) pasta;
+		String pastaRemover = (String) pasta;
 		
-        if(pastas.contains(pastaAdicionar)) {
-        	pastas.remove(pastaAdicionar);
+        if(pastas.contains(pastaRemover)) {
+        	pastas.remove(pastaRemover);
         	
         	try (FileWriter fw = new FileWriter(caminhoArquivo, false)){
         		

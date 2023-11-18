@@ -1,27 +1,33 @@
 package modelo;
 
-import java.util.ArrayList;
 
-public class UsuarioVIP extends Usuario{
+import dao.PlaylistDAO;
+
+public class UsuarioVIP extends Usuario {
 	
-	private ArrayList<Playlist> playlists;
+	private PlaylistDAO playlistDAO;
 	
 	public UsuarioVIP(String id, String nome, String senha) {
 		super(id, nome, senha);
-		this.playlists = new ArrayList<>();
+		playlistDAO = new PlaylistDAO();
+	}
+	
+	public void adicionar(Playlist playlist) {
+		playlistDAO.adicionar(playlist);
+	}
+	
+	public void remover(Playlist playlist) {
+		playlistDAO.remover(playlist);
 	}
 
-	public UsuarioVIP(String id, String nome, String senha, ArrayList<Playlist> playlists) {
-		super(id, nome, senha);
-		this.playlists = playlists;
+	public PlaylistDAO getPlaylistDAO() {
+		return playlistDAO;
 	}
 
-	public ArrayList<Playlist> getPlaylists() {
-		return playlists;
+	public void setPlaylistDAO(PlaylistDAO playlistDAO) {
+		this.playlistDAO = playlistDAO;
 	}
 
-	public void setPlaylists(ArrayList<Playlist> playlists) {
-		this.playlists = playlists;
-	}
+
 
 }
