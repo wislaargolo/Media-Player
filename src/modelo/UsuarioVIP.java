@@ -12,11 +12,11 @@ public class UsuarioVIP extends Usuario {
 		playlistDAO = new PlaylistDAO();
 	}
 	
-	public void adicionar(Playlist playlist) {
+	public void adicionarPlaylist(Playlist playlist) {
 		playlistDAO.adicionar(playlist);
 	}
 	
-	public void remover(Playlist playlist) {
+	public void removerPlaylist(Playlist playlist) {
 		playlistDAO.remover(playlist);
 	}
 
