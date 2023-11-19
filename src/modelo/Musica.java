@@ -10,7 +10,6 @@ public class Musica {
 	}
 	
 	public Musica(String nome, String caminhoArquivo) {
-		super();
 		this.nome = nome;
 		this.caminhoArquivo = caminhoArquivo;
 	}
