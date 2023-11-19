@@ -30,6 +30,20 @@ public class Musica {
 		this.caminhoArquivo = caminhoArquivo;
 	}
 	
-	
+	@Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
 
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+
+        Musica musica = (Musica) obj;
+
+        return nome.equals(musica.nome) &&
+               caminhoArquivo.equals(musica.caminhoArquivo);
+    }
+	
 }
