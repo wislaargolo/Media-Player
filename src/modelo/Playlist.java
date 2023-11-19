@@ -12,7 +12,6 @@ public class Playlist {
 	}
 	
 	public Playlist(String nome, ArrayList<Musica> musicas) {
-		super();
 		this.nome = nome;
 		this.musicas = musicas;
 	}
