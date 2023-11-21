@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 import modelo.Musica;
 
-public class MusicaDAO implements ArquivoDAO{
+public class MusicaDAO {
 	private ArrayList<Musica> musicas;
 	private String caminhoArquivo;
 	
@@ -17,9 +17,9 @@ public class MusicaDAO implements ArquivoDAO{
 	public MusicaDAO(ArrayList<Musica> musicas, String caminhoArquivo) {
 		musicas = new ArrayList<Musica>();
 		this.caminhoArquivo = caminhoArquivo;
+		this.carregar();
 	}
 	
-	@Override
 	public void carregar() {
 		try (BufferedReader br = new BufferedReader(new FileReader(caminhoArquivo))) {
             String linha;
@@ -36,14 +36,12 @@ public class MusicaDAO implements ArquivoDAO{
             e.printStackTrace();
         }
 	}
-	@Override
-	public void adicionar(Object musica) {
-		Musica musicaAdicionar = (Musica) musica;
-		if (!musicas.contains(musicaAdicionar)) {
-			musicas.add(musicaAdicionar);
+	public void adicionar(Musica musica) {
+		if (!musicas.contains(musica)) {
+			musicas.add(musica);
 	
 	        try (FileWriter fw = new FileWriter(caminhoArquivo, true)){
-	            String conteudo = musicaAdicionar.getNome() + "," + musicaAdicionar.getCaminhoArquivo();
+	            String conteudo = musica.getNome() + "," + musica.getCaminhoArquivo();
 	            
 	            fw.write(conteudo);
 	            fw.write(System.lineSeparator());
@@ -53,17 +51,14 @@ public class MusicaDAO implements ArquivoDAO{
 	        }
         }
 	}
-	@Override
-	public void remover(Object musica) {
-		Musica musicaRemover = (Musica) musica;
-		
-		if(musicas.contains(musicaRemover)) {
-			musicas.remove(musicaRemover);
+	public void remover(Musica musica) {
+		if(musicas.contains(musica)) {
+			musicas.remove(musica);
         	
         	try (FileWriter fw = new FileWriter(caminhoArquivo, false)){
         		
-        		for (Musica u : musicas) {
-                    String conteudo = u.getNome() + "," + u.getCaminhoArquivo();
+        		for (Musica m : musicas) {
+                    String conteudo = m.getNome() + "," + m.getCaminhoArquivo();
                     
                     fw.write(conteudo);
                     fw.write(System.lineSeparator());

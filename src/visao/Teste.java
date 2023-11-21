@@ -38,7 +38,7 @@ public class Teste {
 			}
 		}
 		
-		for(String u : dDAO.getPastas()) {
+		for(String u : dDAO.getDiretorios()) {
 			//System.out.println("VIP");
 			System.out.println(u);
 		

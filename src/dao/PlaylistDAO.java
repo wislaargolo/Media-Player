@@ -5,27 +5,22 @@ import java.util.ArrayList;
 import modelo.Playlist;
 
 
-public class PlaylistDAO implements ArquivoDAO {
+public class PlaylistDAO  {
 	private ArrayList<Playlist> playlists;
 
 	public PlaylistDAO() {
 		playlists = new ArrayList<>();
 	}
 
-	@Override
 	public void carregar() {
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
-	public void adicionar(Object object) {
+	public void adicionar(Playlist playlist) {
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
-	public void remover(Object object) {
+	public void remover(Playlist playlist) {
 		// TODO Auto-generated method stub
 		
 	}

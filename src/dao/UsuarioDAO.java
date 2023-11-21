@@ -1,7 +1,6 @@
 package dao;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -11,7 +10,7 @@ import modelo.Usuario;
 import modelo.UsuarioComum;
 import modelo.UsuarioVIP;
 
-public class UsuarioDAO implements ArquivoDAO{
+public class UsuarioDAO {
 
 	private ArrayList<Usuario> usuarios;
 	private String caminhoArquivo;
@@ -21,7 +20,6 @@ public class UsuarioDAO implements ArquivoDAO{
 		this.caminhoArquivo = caminhoArquivo;
 	}
 
-	@Override
 	public void carregar() {
 	
         try (BufferedReader br = new BufferedReader(new FileReader(caminhoArquivo))){	
@@ -48,16 +46,13 @@ public class UsuarioDAO implements ArquivoDAO{
 		
 	}
 
-	@Override
-    public void adicionar(Object usuario) {
-        Usuario usuarioAdicionar = (Usuario) usuario;
-        
-        if (!usuarios.contains(usuarioAdicionar)) {
-	        usuarios.add(usuarioAdicionar);
+    public void adicionar(Usuario usuario) {
+        if (!usuarios.contains(usuario)) {
+	        usuarios.add(usuario);
 	
 	        try (FileWriter fw = new FileWriter(caminhoArquivo, true)){
-	            String conteudo = usuarioAdicionar.getNome() + "," + usuarioAdicionar.getId() + "," 
-	            						   + usuarioAdicionar.getSenha() + ",";
+	            String conteudo = usuario.getNome() + "," + usuario.getId() + "," 
+	            				  + usuario.getSenha() + ",";
 	            
 	            if(usuario instanceof UsuarioComum) {
 	            	conteudo = conteudo + "COMUM";
@@ -75,12 +70,9 @@ public class UsuarioDAO implements ArquivoDAO{
         
     }
 	
-	@Override
-    public void remover(Object usuario) {
-		Usuario usuarioRemover = (Usuario) usuario;
-		
-        if(usuarios.contains(usuarioRemover)) {
-        	usuarios.remove(usuarioRemover);
+    public void remover(Usuario usuario) {		
+        if(usuarios.contains(usuario)) {
+        	usuarios.remove(usuario);
         	
         	try (FileWriter fw = new FileWriter(caminhoArquivo, false)){
         		

@@ -6,26 +6,21 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import modelo.Usuario;
-import modelo.UsuarioComum;
-import modelo.UsuarioVIP;
-
-public class DiretorioDAO implements ArquivoDAO{
-	private ArrayList<String> pastas;
+public class DiretorioDAO {
+	private ArrayList<String> diretorios;
 	private String caminhoArquivo;
 
 	public DiretorioDAO(String caminhoArquivo) {
 		this.caminhoArquivo = caminhoArquivo;
-		pastas = new ArrayList<String>();
+		diretorios = new ArrayList<String>();
 	}
 
-	@Override
 	public void carregar() {
 		try (BufferedReader br = new BufferedReader(new FileReader(caminhoArquivo))) {
             String linha;
 
             while ((linha = br.readLine()) != null) {
-                pastas.add(linha);
+            	diretorios.add(linha);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -33,15 +28,12 @@ public class DiretorioDAO implements ArquivoDAO{
 		
 	}
 
-	@Override
-	public void adicionar(Object pasta) {
-		String pastaAdicionar = (String) pasta;
-        
-        if (!pastas.contains(pastaAdicionar)) {
-	        pastas.add(pastaAdicionar);
+	public void adicionar(String diretorio) {
+        if (!diretorios.contains(diretorio)) {
+        	diretorios.add(diretorio);
 	
 	        try (FileWriter fw = new FileWriter(caminhoArquivo, true)){
-	            fw.write(pastaAdicionar);
+	            fw.write(diretorio);
 	            fw.write(System.lineSeparator());
 	        } catch (IOException e) {
 	            e.printStackTrace();
@@ -50,17 +42,14 @@ public class DiretorioDAO implements ArquivoDAO{
 		
 	}
 
-	@Override
-	public void remover(Object pasta) {
-		String pastaRemover = (String) pasta;
-		
-        if(pastas.contains(pastaRemover)) {
-        	pastas.remove(pastaRemover);
+	public void remover(String diretorio) {
+        if(diretorios.contains(diretorio)) {
+        	diretorios.remove(diretorio);
         	
         	try (FileWriter fw = new FileWriter(caminhoArquivo, false)){
         		
-        		for (String p : pastas) {
-					fw.write(p);
+        		for (String d : diretorios) {
+					fw.write(d);
 					fw.write(System.lineSeparator());
                 }
         		
@@ -72,12 +61,12 @@ public class DiretorioDAO implements ArquivoDAO{
 		
 
 
-	public ArrayList<String> getPastas() {
-		return pastas;
+	public ArrayList<String> getDiretorios() {
+		return diretorios;
 	}
 
-	public void setPastas(ArrayList<String> pastas) {
-		this.pastas = pastas;
+	public void setDiretorios(ArrayList<String> diretorios) {
+		this.diretorios = diretorios;
 	}
 
 	public String getCaminhoArquivo() {
