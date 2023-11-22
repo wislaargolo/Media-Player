@@ -72,7 +72,7 @@ public class PlaylistDAO  {
 			playlists.add(playlist);
 			
 			String diretorioAtual = System.getProperty("user.dir");
-			String caminho = diretorioAtual + "/src/dados/playlists/playlist_" + usuario.getId() + 
+			String caminho = diretorioAtual + "/dados/playlists/playlist_" + usuario.getId() + 
 							"_" + playlist.getNome() + ".txt";
 		
 			// cria e escreve no arquivo inividual da playlist
@@ -116,7 +116,7 @@ public class PlaylistDAO  {
 			playlists.remove(playlist);
 			
 			String diretorioAtual = System.getProperty("user.dir");
-			String caminho = diretorioAtual + "/src/dados/playlists/playlist_" + usuario.getId() + "_" + 
+			String caminho = diretorioAtual + "/dados/playlists/playlist_" + usuario.getId() + "_" + 
 							playlist.getNome() + ".txt";
 			
         	try {

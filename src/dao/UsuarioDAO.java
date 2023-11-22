@@ -7,16 +7,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import modelo.Usuario;
-import modelo.UsuarioComum;
 import modelo.UsuarioVIP;
+import modelo.UsuarioComum;
 
 public class UsuarioDAO {
 
 	private ArrayList<Usuario> usuarios;
 	private String caminhoArquivo;
 
-	public UsuarioDAO(String caminhoArquivo) {
-		this.caminhoArquivo = caminhoArquivo;
+	public UsuarioDAO() {
+		String diretorioAtual = System.getProperty("user.dir");
+		this.caminhoArquivo = diretorioAtual + "/dados/usuarios.txt";
 		usuarios = new ArrayList<Usuario>();
 	}
 
@@ -54,10 +55,10 @@ public class UsuarioDAO {
 	            String conteudo = usuario.getNome() + "," + usuario.getId() + "," 
 	            				  + usuario.getSenha() + ",";
 	            
-	            if(usuario instanceof UsuarioComum) {
-	            	conteudo = conteudo + "COMUM";
-	            } else {
+	            if(usuario instanceof UsuarioVIP) {
 	            	conteudo = conteudo + "VIP";
+	            } else {
+	            	conteudo = conteudo + "COMUM";
 	            }
 	            
 	            fw.write(conteudo);
@@ -79,10 +80,10 @@ public class UsuarioDAO {
         		for (Usuario u : usuarios) {
                     String conteudo = u.getNome() + "," + u.getId() + "," + u.getSenha() + ",";
                     
-                    if(usuario instanceof UsuarioComum) {
-    	            	conteudo = conteudo + "COMUM";
-    	            } else {
+                    if(usuario instanceof UsuarioVIP) {
     	            	conteudo = conteudo + "VIP";
+    	            } else {
+    	            	conteudo = conteudo + "COMUM";
     	            }
                     
                     fw.write(conteudo);

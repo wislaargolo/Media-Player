@@ -12,11 +12,10 @@ public class MusicaDAO {
 	private ArrayList<Musica> musicas;
 	private String caminhoArquivo;
 	
-	
-	
-	public MusicaDAO(ArrayList<Musica> musicas, String caminhoArquivo) {
+	public MusicaDAO() {
 		musicas = new ArrayList<Musica>();
-		this.caminhoArquivo = caminhoArquivo;
+		String diretorioAtual = System.getProperty("user.dir");
+		this.caminhoArquivo = diretorioAtual + "/dados/musicas.txt";
 		this.carregar();
 	}
 	
@@ -38,7 +37,7 @@ public class MusicaDAO {
 	}
 	public void adicionar(Musica musica) {
 		if (!musicas.contains(musica)) {
-			musicas.add(musica);
+			musicas.add(musica);		
 	
 	        try (FileWriter fw = new FileWriter(caminhoArquivo, true)){
 	            String conteudo = musica.getNome() + "," + musica.getCaminhoArquivo();
