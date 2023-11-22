@@ -16,8 +16,8 @@ public class UsuarioDAO {
 	private String caminhoArquivo;
 
 	public UsuarioDAO(String caminhoArquivo) {
-		usuarios = new ArrayList<Usuario>();
 		this.caminhoArquivo = caminhoArquivo;
+		usuarios = new ArrayList<Usuario>();
 	}
 
 	public void carregar() {
@@ -110,7 +110,4 @@ public class UsuarioDAO {
 	public void setCaminhoArquivo(String caminhoArquivo) {
 		this.caminhoArquivo = caminhoArquivo;
 	}
-	
-	
-
 }
