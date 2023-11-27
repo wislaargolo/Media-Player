@@ -76,7 +76,7 @@ public class DiretorioDAO {
 	    if (!diretorios.contains(novo)) {
 	        File diretorio = new File(caminhoDiretorio);
 	        if (diretorio.isDirectory()) {
-	            diretorios.add(new Diretorio(usuario, caminhoDiretorio)); 
+	            diretorios.add(novo); 
 	            carregarMusicas(diretorio); 
 
 	            try (FileWriter fw = new FileWriter(caminhoArquivo, true)) {
@@ -98,7 +98,7 @@ public class DiretorioDAO {
 	    if (!diretorios.contains(remover)) {
 	        File diretorio = new File(caminhoDiretorio);
 	        if (diretorio.isDirectory()) {
-	            diretorios.remove(caminhoDiretorio); 
+	            diretorios.remove(remover); 
 	            removerMusicas(diretorio); 
 
 	            try (FileWriter fw = new FileWriter(caminhoArquivo, false)) {
