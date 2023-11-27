@@ -94,7 +94,7 @@ public class UsuarioDAO {
 			}
         }
     }
-
+    
 	public ArrayList<Usuario> getUsuarios() {
 		return usuarios;
 	}

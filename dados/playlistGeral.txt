@@ -1,1 +1,1 @@
-novoNome,C:\Users\ruben\Documents\graduacao\LP2\Media-Player/dados/playlists/playlist_RM777_novoNome.txt
+playlistDeRubens,/Users/wislaargolo/Documents/Media-Player/dados/playlists/playlist_RM777_playlistDeRubens.txt

@@ -15,6 +15,14 @@ public class Playlist {
 		this.nome = nome;
 		this.musicas = musicas;
 	}
+	
+	public void adicionarMusica(Musica musica) {
+		musicas.add(musica);
+	}
+	
+	public void removerMusica(Musica musica) {
+		musicas.remove(musica);
+	}
 
 
 	public String getNome() {

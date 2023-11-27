@@ -15,6 +15,7 @@ public class UsuarioVIP extends Usuario {
 
 	public void adicionarPlaylist(Playlist playlist) {
 		playlistDAO.adicionar(playlist, this);
+		
 	}
 
 	public void removerPlaylist(Playlist playlist) {

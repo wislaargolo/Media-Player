@@ -7,6 +7,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.stream.Stream;
 
 import modelo.Musica;
@@ -52,9 +53,7 @@ public class PlaylistDAO  {
 	            }
 	            if (playlistAtual.get(0).equals(usuario.getNome()) && playlistAtual.get(1).equals(usuario.getId())) {
 	            	for (int j = 3; j < playlistAtual.size(); j += 2) {
-	            		Musica aux;
-	                    aux = new Musica(playlistAtual.get(j), playlistAtual.get(j+1));
-	                    musicas.add(aux);
+	                    musicas.add(new Musica(playlistAtual.get(j), playlistAtual.get(j+1)));
 	            	}
 	            	Playlist playTemp;
 	            	playTemp = new Playlist(playlistAtual.get(2), musicas);
@@ -224,6 +223,64 @@ public class PlaylistDAO  {
 	        }
    
         }
+	}
+	
+	public void removerMusica(Musica musica, Playlist playlist, UsuarioVIP usuario) {
+		
+		playlist.removerMusica(musica);
+		
+		String diretorioAtual = System.getProperty("user.dir");
+		String caminho = diretorioAtual + "/dados/playlists/playlist_" + usuario.getId() + "_" + 
+				playlist.getNome() + ".txt";
+		
+		try (FileWriter fw = new FileWriter(caminho, false)) {
+			String conteudo = usuario.getNome() + "," + usuario.getId();
+			fw.write(conteudo);
+            fw.write(System.lineSeparator());
+            
+            conteudo = playlist.getNome();	        
+            fw.write(conteudo);
+            fw.write(System.lineSeparator());
+            
+            for (Musica musicaAtual : playlist.getMusicas()) {
+            	conteudo = musicaAtual.getNome() + "," + musicaAtual.getCaminhoArquivo();
+                fw.write(conteudo);
+                fw.write(System.lineSeparator());
+            }
+		} catch (IOException e) {
+            e.printStackTrace();
+       }
+		
+	}
+	
+	public void removerMusica(Musica musica, UsuarioVIP usuario) {
+		 for (Iterator<Playlist> playlistIterator = playlists.iterator(); playlistIterator.hasNext();) {
+		        Playlist p = playlistIterator.next();
+		        for (Iterator<Musica> musicIterator = p.getMusicas().iterator(); musicIterator.hasNext();) {
+		            Musica m = musicIterator.next();
+		            if (musica.equals(m)) {
+		                musicIterator.remove(); 
+		                removerMusica(m,p,usuario);
+		            }
+		        }
+		  }
+	}
+	
+	public void adicionarMusica(Musica musica, Playlist playlist, UsuarioVIP usuario) {
+		playlist.adicionarMusica(musica);
+		
+		String diretorioAtual = System.getProperty("user.dir");
+		String caminho = diretorioAtual + "/dados/playlists/playlist_" + usuario.getId() + "_" + 
+				playlist.getNome() + ".txt";
+		
+		 try (FileWriter fw = new FileWriter(caminho, true)) {
+			 String conteudo = musica.getNome() + "," + musica.getCaminhoArquivo();
+			 fw.write(conteudo);
+			 fw.write(System.lineSeparator());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+		
 	}
 	
 

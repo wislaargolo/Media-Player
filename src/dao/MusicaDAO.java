@@ -7,16 +7,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import modelo.Musica;
+import modelo.Playlist;
+import modelo.Usuario;
+import modelo.UsuarioVIP;
 
 public class MusicaDAO {
 	private ArrayList<Musica> musicas;
 	private String caminhoArquivo;
 	
-	public MusicaDAO() {
+	public MusicaDAO(String caminhoArquivo) {
 		musicas = new ArrayList<Musica>();
-		String diretorioAtual = System.getProperty("user.dir");
-		this.caminhoArquivo = diretorioAtual + "/dados/musicas.txt";
-		this.carregar();
+		this.caminhoArquivo = caminhoArquivo;
 	}
 	
 	public void carregar() {
@@ -27,9 +28,7 @@ public class MusicaDAO {
             	String[] partes = linha.split(",");
                 String nome = partes[0];
                 String caminho = partes[1];
-                Musica aux;
-                aux = new Musica(nome, caminho);
-                musicas.add(aux);
+                musicas.add(new Musica(nome, caminho));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -50,7 +49,7 @@ public class MusicaDAO {
 	        }
         }
 	}
-	public void remover(Musica musica) {
+	public void remover(Usuario usuario, Musica musica) {
 		if(musicas.contains(musica)) {
 			musicas.remove(musica);
         	
@@ -63,11 +62,20 @@ public class MusicaDAO {
                     fw.write(System.lineSeparator());
                 }
         		
+        		
+        		if(usuario instanceof UsuarioVIP) {
+        			UsuarioVIP aux = (UsuarioVIP) usuario;
+        			aux.getPlaylistDAO().removerMusica(musica,aux);
+        			
+        		}
+        		
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
         }
+		
 	}
+	
 	public ArrayList<Musica> getMusicas() {
 		return musicas;
 	}
