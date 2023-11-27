@@ -20,6 +20,12 @@ public class UsuarioVIP extends Usuario {
 	public void removerPlaylist(Playlist playlist) {
 		playlistDAO.remover(playlist, this);
 	}
+	
+	public void renomearPaylist(Playlist playlist, String novoNome) {
+		if ( novoNome != null && novoNome != "") {
+			playlistDAO.atualizar(playlist, this, novoNome);
+		}
+	}
 
 	public PlaylistDAO getPlaylistDAO() {
 		return playlistDAO;

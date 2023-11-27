@@ -159,6 +159,73 @@ public class PlaylistDAO  {
         }
 	}
 	
+	public void atualizar(Playlist playlist, UsuarioVIP usuario, String novoNome) {
+		if(playlists.contains(playlist)) {
+			
+			String nomeAtual = playlist.getNome(); 
+			
+			String diretorioAtual = System.getProperty("user.dir");
+			String caminhoAtual = diretorioAtual + "/dados/playlists/playlist_" + usuario.getId() + "_" + 
+							playlist.getNome() + ".txt";
+			
+			int posicao = playlists.indexOf(playlist);
+			playlist.setNome(novoNome);
+			playlists.set(posicao, playlist);
+			
+			String caminhoNovo = diretorioAtual + "/dados/playlists/playlist_" + usuario.getId() + "_" + 
+							playlist.getNome() + ".txt";
+			
+	        File arquivoAtual = new File(caminhoAtual);
+	        File novoArquivo = new File(caminhoNovo);
+	        
+	        try {
+	        	arquivoAtual.renameTo(novoArquivo);
+	            
+	        } catch (SecurityException e) {
+	            System.err.println("Erro de segurança ao tentar renomear o arquivo.");
+	            e.printStackTrace();
+	        } catch (Exception e) {
+	            System.err.println("Ocorreu um erro inesperado durante a renomeação do arquivo.");
+	            e.printStackTrace();
+	        }
+	        
+        	
+        	ArrayList<String> nomes = new ArrayList<>();
+    		ArrayList<String> caminhos = new ArrayList<>();
+    		try (BufferedReader br = new BufferedReader(new FileReader(caminhoArquivo))) {
+                String linha;
+
+                while ((linha = br.readLine()) != null) {
+                	String[] partes = linha.split(",");
+                    nomes.add(partes[0]);
+                    caminhos.add(partes[1]);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+    		
+    		posicao = nomes.indexOf(nomeAtual);
+    		nomes.set(posicao, playlist.getNome());
+    		
+    		posicao = caminhos.indexOf(caminhoAtual);
+    		caminhos.set(posicao, caminhoNovo);
+    		
+    		try (FileWriter fw = new FileWriter(caminhoArquivo, false)){
+    			
+    			for (int i = 0; i < nomes.size(); i++) {
+    				String conteudo = nomes.get(i) + "," + caminhos.get(i);
+    	            
+    	            fw.write(conteudo);
+    	            fw.write(System.lineSeparator());
+    			}		
+	            
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+   
+        }
+	}
+	
 
 	public ArrayList<Playlist> getPlaylists() {
 		return playlists;
