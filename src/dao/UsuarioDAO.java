@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 import modelo.Usuario;
 import modelo.UsuarioVIP;
-import modelo.UsuarioComum;
 
 public class UsuarioDAO {
 
@@ -35,7 +34,7 @@ public class UsuarioDAO {
                     if (partes[3].equalsIgnoreCase("VIP")) {
                         aux = new UsuarioVIP(id, nome, senha);
                     } else {
-                        aux = new UsuarioComum(id, nome, senha);
+                        aux = new Usuario(id, nome, senha);
                     }
                     usuarios.add(aux);
                    

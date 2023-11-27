@@ -7,32 +7,39 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import modelo.Diretorio;
 import modelo.Musica;
+import modelo.Usuario;
 
 public class DiretorioDAO {
-	private ArrayList<String> diretorios;
+	private ArrayList<Diretorio> diretorios;
 	private String caminhoArquivo;
 	private MusicaDAO musicaDAO;
 
 	public DiretorioDAO(MusicaDAO musicaDAO) {
 		String diretorioAtual = System.getProperty("user.dir");
 		this.caminhoArquivo = diretorioAtual + "/dados/diretorios.txt";
-		diretorios = new ArrayList<String>();
+		diretorios = new ArrayList<Diretorio>();
 		this.musicaDAO = musicaDAO;
-		this.carregar();
 		
 	}
 
-	public void carregar() {
+	public void carregar(Usuario usuario) {
 		try (BufferedReader br = new BufferedReader(new FileReader(caminhoArquivo))) {
             String linha;
 
             while ((linha = br.readLine()) != null) {
-            	File diretorio = new File(linha);
-            	if(diretorio.isDirectory()) {
-	            	diretorios.add(linha);
-	            	carregarMusicas(diretorio);
-            	}
+                String[] partes = linha.split(","); 
+                String id = partes[0];
+                String caminhoDiretorio = partes[1];
+
+                if (usuario.getId().equals(id)) {
+                    File diretorio = new File(caminhoDiretorio);
+                    if (diretorio.isDirectory()) {
+                        diretorios.add(new Diretorio(usuario, caminhoDiretorio));
+                        carregarMusicas(diretorio); 
+                    }
+                }
             }
             
         } catch (IOException e) {
@@ -51,50 +58,70 @@ public class DiretorioDAO {
             }
         }
 	}
-
-	public void adicionar(String caminhoDiretorio) {
-        if (!diretorios.contains(caminhoDiretorio)) {
-        	File diretorio = new File(caminhoDiretorio);
-        	if(diretorio.isDirectory()) {
-            	diretorios.add(caminhoDiretorio);
-            	carregarMusicas(diretorio);
 	
-		        try (FileWriter fw = new FileWriter(caminhoArquivo, true)){
-		            fw.write(caminhoDiretorio);
-		            fw.write(System.lineSeparator());
-		        } catch (IOException e) {
-		            e.printStackTrace();
-		        }
-        	}
+	private void removerMusicas(File diretorio) {
+        File[] listaArquivos = diretorio.listFiles();
+        if (listaArquivos != null) {
+            for (File arquivo : listaArquivos) {
+                if (arquivo.isFile() && arquivo.getName().toLowerCase().endsWith(".mp3")) {
+                    musicaDAO.remover(new Musica(arquivo.getName(), arquivo.getAbsolutePath()));
+                }
+            }
         }
+	}
+
+	public void adicionar(String caminhoDiretorio, Usuario usuario) {
+		Diretorio novo = new Diretorio(usuario, caminhoDiretorio);
+		
+	    if (!diretorios.contains(novo)) {
+	        File diretorio = new File(caminhoDiretorio);
+	        if (diretorio.isDirectory()) {
+	            diretorios.add(new Diretorio(usuario, caminhoDiretorio)); 
+	            carregarMusicas(diretorio); 
+
+	            try (FileWriter fw = new FileWriter(caminhoArquivo, true)) {
+	            	String linhaAdicionar = usuario.getId() + "," + caminhoDiretorio;
+	                fw.write(linhaAdicionar);
+	                fw.write(System.lineSeparator());
+	            } catch (IOException e) {
+	                e.printStackTrace();
+	            }
+	        }
+	    }
         	
 		
 	}
+	
+	public void remover(String caminhoDiretorio, Usuario usuario) {
+		Diretorio remover = new Diretorio(usuario, caminhoDiretorio);
 
-//	public void remover(String diretorio) {
-//        if(diretorios.contains(diretorio)) {
-//        	diretorios.remove(diretorio);
-//        	
-//        	try (FileWriter fw = new FileWriter(caminhoArquivo, false)){
-//        		
-//        		for (String d : diretorios) {
-//					fw.write(d);
-//					fw.write(System.lineSeparator());
-//                }
-//        		
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//	}
+	    if (!diretorios.contains(remover)) {
+	        File diretorio = new File(caminhoDiretorio);
+	        if (diretorio.isDirectory()) {
+	            diretorios.remove(caminhoDiretorio); 
+	            removerMusicas(diretorio); 
+
+	            try (FileWriter fw = new FileWriter(caminhoArquivo, false)) {
+	            	for (Diretorio d : diretorios) {
+	            		String linhaAdicionar = d.getDono().getId() + "," + caminhoDiretorio;
+						fw.write(linhaAdicionar);
+						fw.write(System.lineSeparator());
+	                }
+	            } catch (IOException e) {
+	                e.printStackTrace();
+	            }
+	        }
+	    }
+        	
 		
+	}	
 
 
-	public ArrayList<String> getDiretorios() {
+	public ArrayList<Diretorio> getDiretorios() {
 		return diretorios;
 	}
 
-	public void setDiretorios(ArrayList<String> diretorios) {
+	public void setDiretorios(ArrayList<Diretorio> diretorios) {
 		this.diretorios = diretorios;
 	}
 
@@ -104,14 +131,6 @@ public class DiretorioDAO {
 
 	public void setCaminhoArquivo(String caminhoArquivo) {
 		this.caminhoArquivo = caminhoArquivo;
-	}
-
-	public MusicaDAO getMusicaDAO() {
-		return musicaDAO;
-	}
-
-	public void setMusicaDAO(MusicaDAO musicaDAO) {
-		this.musicaDAO = musicaDAO;
 	}
 
 

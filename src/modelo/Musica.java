@@ -3,6 +3,7 @@ package modelo;
 public class Musica {
 	
 	private String nome;
+	private Usuario dono;
 	private String caminhoArquivo;
 
 	public Musica() {
@@ -29,7 +30,15 @@ public class Musica {
 	public void setCaminhoArquivo(String caminhoArquivo) {
 		this.caminhoArquivo = caminhoArquivo;
 	}
-	
+
+	public Usuario getDono() {
+		return dono;
+	}
+
+	public void setDono(Usuario dono) {
+		this.dono = dono;
+	}
+
 	@Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -42,7 +51,7 @@ public class Musica {
 
         Musica musica = (Musica) obj;
 
-        return nome.equals(musica.nome) &&
+        return nome.equals(musica.nome) && dono.equals(musica.dono) &&
                caminhoArquivo.equals(musica.caminhoArquivo);
     }
 	
